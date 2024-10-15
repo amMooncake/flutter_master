@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_master/ghost.dart';
 import 'package:flutter_master/pixel.dart';
 import 'package:flutter_master/Path.dart';
 import 'package:flutter_master/player.dart';
@@ -127,9 +128,10 @@ class _HomePageState extends State<HomePage> {
   String direction = "right";
 
   void startGame() {
+    moveGohst();
     preGame = false;
     getFood();
-    Timer.periodic(Duration(milliseconds: 200), (timer) {
+    Timer.periodic(Duration(milliseconds: 120), (timer) {
       setState(() {
         mouthClosed = !mouthClosed;
       });
@@ -152,6 +154,41 @@ class _HomePageState extends State<HomePage> {
           moveDown();
           break;
       }
+    });
+  }
+
+  int ghost = numberInRow * 1 + 9;
+  String ghostDirection = 'left';
+  List<String> ghostPath = ['left', 'up', 'right', 'down'];
+
+  void moveGohst() {
+    Timer.periodic(Duration(milliseconds: 200), (timer) {
+      int random = Random().nextInt(4);
+      ghostDirection = ghostPath[random];
+      setState(() {
+        switch (ghostDirection) {
+          case "left":
+            if (!barriers.contains(ghost - 1)) {
+              ghost--;
+            }
+            break;
+          case "right":
+            if (!barriers.contains(ghost + 1)) {
+              ghost++;
+            }
+            break;
+          case "up":
+            if (!barriers.contains(ghost - numberInRow)) {
+              ghost -= numberInRow;
+            }
+            break;
+          case "down":
+            if (!barriers.contains(ghost + numberInRow)) {
+              ghost += numberInRow;
+            }
+            break;
+        }
+      });
     });
   }
 
@@ -228,7 +265,9 @@ class _HomePageState extends State<HomePage> {
                   itemCount: numberOfSquares,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: numberInRow),
                   itemBuilder: (BuildContext ctx, int index) {
-                    if (mouthClosed && player == index) {
+                    if (ghost == index) {
+                      return MyGhost();
+                    } else if (mouthClosed && player == index) {
                       return Padding(
                         padding: EdgeInsets.all(4),
                         child: Container(
