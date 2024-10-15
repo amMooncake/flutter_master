@@ -17,6 +17,8 @@ class _HomePageState extends State<HomePage> {
   static int numberInRow = 11;
   int numberOfSquares = numberInRow * 17;
   int player = numberInRow * 15 + 1;
+  bool preGame = true;
+  bool mouthClosed = false;
 
   static List<int> barriers = [
     0,
@@ -125,8 +127,13 @@ class _HomePageState extends State<HomePage> {
   String direction = "right";
 
   void startGame() {
+    preGame = false;
     getFood();
     Timer.periodic(Duration(milliseconds: 200), (timer) {
+      setState(() {
+        mouthClosed = !mouthClosed;
+      });
+
       if (food.contains(player)) {
         food.remove(player);
       }
@@ -203,6 +210,8 @@ class _HomePageState extends State<HomePage> {
                 } else if (details.delta.dy < 0) {
                   direction = "up";
                 }
+                print(direction);
+                setState(() {});
               },
               onHorizontalDragUpdate: (details) {
                 if (details.delta.dx > 0) {
@@ -210,6 +219,8 @@ class _HomePageState extends State<HomePage> {
                 } else if (details.delta.dx < 0) {
                   direction = "left";
                 }
+                setState(() {});
+                print(direction);
               },
               child: Container(
                 child: GridView.builder(
@@ -217,7 +228,17 @@ class _HomePageState extends State<HomePage> {
                   itemCount: numberOfSquares,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: numberInRow),
                   itemBuilder: (BuildContext ctx, int index) {
-                    if (player == index) {
+                    if (mouthClosed && player == index) {
+                      return Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xfffdcd0b),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      );
+                    } else if (player == index) {
                       switch (direction) {
                         case "left":
                           return Transform.rotate(angle: pi, child: const MyPlayer());
@@ -235,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                         innerColor: Colors.blue[800]!,
                         outerColor: Colors.blue[900]!,
                       );
-                    } else if (!food.contains(index)) {
+                    } else if (!food.contains(index) && !preGame) {
                       return MyPixel(
                         innerColor: Colors.black,
                         outerColor: Colors.black,
@@ -257,11 +278,11 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "Score: ",
+                    "Score: ${preGame ? 0 : 87 - food.length}",
                     style: TextStyle(color: Colors.white, fontSize: 40),
                   ),
                   GestureDetector(
-                    onTap: startGame,
+                    onTap: preGame ? startGame : null,
                     child: Text(
                       "P L A Y ",
                       style: TextStyle(color: Colors.white, fontSize: 40),
