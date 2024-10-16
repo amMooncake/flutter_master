@@ -12,11 +12,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          textTheme: const TextTheme(
-        displayLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.black),
-      )),
-      debugShowCheckedModeBanner: false,
+        primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.black),
+        ),
+      ),
       home: MyEncryption(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
