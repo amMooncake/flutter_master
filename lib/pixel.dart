@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyPixel extends StatelessWidget {
   final Color innerColor;
-  final int? index;
+  final String? value;
 
-  const MyPixel({required this.innerColor, this.index, super.key});
+  const MyPixel({required this.innerColor, this.value, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class MyPixel extends StatelessWidget {
           color: innerColor,
           child: Center(
             child: Text(
-              index == null ? " " : index.toString(),
+              value == null ? " " : value!,
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 20,
