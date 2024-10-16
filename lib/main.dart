@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_master/decription.dart';
 import 'package:flutter_master/encryption.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MainApp extends StatelessWidget {
           displayLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.black),
         ),
       ),
-      home: MyEncryption(),
+      home: const MyEncryption(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_master/pixel.dart';
-import 'package:flutter_master/decription.dart';
-
-import 'package:flutter_master/key.dart';
+// import 'package:flutter_master/key.dart';
 import 'package:flutter_master/encryption_logic.dart';
 
-class MyEncryption extends StatefulWidget {
-  const MyEncryption({super.key});
+class MyDecription extends StatefulWidget {
+  final Map<int, String> alphabet;
+
+  const MyDecription(this.alphabet, {super.key});
 
   static List<int> borders = [2, 3, 4, 5, 6, 7, 8, 9, 17, 25, 33, 41];
 
   @override
-  State<MyEncryption> createState() => _MyEncryptionState();
+  State<MyDecription> createState() => _MyDecriptionState();
 }
 
-class _MyEncryptionState extends State<MyEncryption> {
-  String encryptedText = "tu pojawi się liczba zaszyfrowana";
-
+class _MyDecriptionState extends State<MyDecription> {
+  String decryptedText = "tu pojawi się tekst odszyfrowany";
   late TextEditingController aController;
   late TextEditingController bController;
   late TextEditingController textController;
@@ -25,7 +24,7 @@ class _MyEncryptionState extends State<MyEncryption> {
   String a = '';
   String b = '';
   String text = '';
-  Map<int, String> alphabet = shuffleMap(alphabetPl);
+
   @override
   void initState() {
     super.initState();
@@ -46,12 +45,12 @@ class _MyEncryptionState extends State<MyEncryption> {
     a = aController.text;
     b = bController.text;
     text = textController.text;
-    if (a.isEmpty || b.isEmpty || text.isEmpty) {
+    if (a.isEmpty || b.isEmpty || text == 0) {
       return;
     }
-    encryptedText = "Błąd";
+    decryptedText = "**Błąd**";
     setState(() {});
-    encryptedText = encrypt(text, int.parse(a), int.parse(b)).toString();
+    decryptedText = decrypt(double.parse(text), int.parse(a), int.parse(b)).toString();
     // encryptedText = "$a, $b, $text";
     setState(() {});
   }
@@ -61,24 +60,7 @@ class _MyEncryptionState extends State<MyEncryption> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFeae2b7),
-        title: Text("Enkrypcja"),
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MyDecription(
-                            alphabet,
-                          )));
-            },
-            icon: const Icon(Icons.arrow_forward_sharp, color: Colors.black),
-            label: Text(
-              "Dekrypcja",
-              style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 20),
-            ),
-          ),
-        ],
+        title: const Text("Dekrypcja"),
       ),
       body: Column(
         children: [
@@ -101,13 +83,14 @@ class _MyEncryptionState extends State<MyEncryption> {
                             index += 1;
                             if (index == 1) {
                               return const MyPixel(innerColor: Colors.grey, value: null);
-                            } else if (MyEncryption.borders.contains(index)) {
+                            } else if (MyDecription.borders.contains(index)) {
                               return MyPixel(
                                   innerColor: Colors.red[300]!,
                                   value:
                                       index < 9 ? (index - 1).toString() : ((index - 1) / 8).toString());
                             } else {
-                              return MyPixel(innerColor: Colors.green[300]!, value: alphabet[index]);
+                              return MyPixel(
+                                  innerColor: Colors.green[300]!, value: widget.alphabet[index]);
                             }
                           },
                         ),
@@ -204,14 +187,15 @@ class _MyEncryptionState extends State<MyEncryption> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Tekst do szyfrowania:", style: Theme.of(context).textTheme.displayLarge!),
+                        Text("Liczba do odszyfrowania:",
+                            style: Theme.of(context).textTheme.displayLarge!),
                         const SizedBox(width: 10),
                         Expanded(
                           child: TextField(
                             controller: textController,
                             style: Theme.of(context).textTheme.displayLarge!.copyWith(color: Colors.red),
                             decoration: InputDecoration.collapsed(
-                                hintText: "tu wpisz tekst",
+                                hintText: "tu wpisz tekst zaszyfrowany",
                                 hintStyle: Theme.of(context)
                                     .textTheme
                                     .displayLarge!
@@ -229,7 +213,7 @@ class _MyEncryptionState extends State<MyEncryption> {
                             foregroundColor: const WidgetStatePropertyAll(Colors.black),
                             backgroundColor: const WidgetStatePropertyAll(Colors.red),
                           ),
-                          child: const Text("Szyfruj"),
+                          child: const Text("odszyfruj"),
                         ),
                       ],
                     ),
@@ -240,7 +224,7 @@ class _MyEncryptionState extends State<MyEncryption> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SelectableText(encryptedText, style: Theme.of(context).textTheme.displayLarge!),
+                        Text(decryptedText, style: Theme.of(context).textTheme.displayLarge!),
                       ],
                     ),
                   ),

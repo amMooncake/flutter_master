@@ -1,3 +1,5 @@
+import 'dart:math';
+
 const Map<int, String> alphabetPl = {
   10: 'a',
   11: 'ą',
@@ -35,3 +37,22 @@ const Map<int, String> alphabetPl = {
   47: 'ź',
   48: 'ż',
 };
+
+void main() {
+  Map<int, String> shuffledValuesMap = shuffleMap(alphabetPl);
+  print(shuffledValuesMap);
+}
+
+Map<int, String> shuffleMap(Map<int, String> map) {
+  List<String> values = map.values.toList();
+  values.shuffle(Random());
+
+  Map<int, String> shuffledMap = {};
+  int index = 0;
+  for (int key in map.keys) {
+    shuffledMap[key] = values[index];
+    index++;
+  }
+
+  return shuffledMap;
+}
