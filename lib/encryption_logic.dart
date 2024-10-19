@@ -1,30 +1,49 @@
-import 'dart:math';
-import 'package:flutter_master/key.dart';
+// import 'dart:math';
+// import 'package:flutter_master/key.dart';
 
 String text = "ala 123123ma kot 1!@#!@#  ///";
 String stringInAlphabet = "aąbcćdeęfghijklłmnńoóprsśtuwyzźż";
 
-double encrypt(String text, int a, int b) {
+String encrypt(String text, int a, int b, Map<int, String> alphabet) {
   String tableString = "";
   text = text.toLowerCase();
   for (int i = 0; i < text.length; i++) {
     String char = text[i];
     if (stringInAlphabet.contains(char)) {
-      tableString += alphabetPl.entries.firstWhere((element) => element.value == char).key.toString();
+      tableString += alphabet.entries.firstWhere((element) => element.value == char).key.toString();
     }
   }
-  double y = double.parse(tableString);
-  return (sqrt(y) - b / a);
-}
 
-String decrypt(double y, int a, int b) {
-  String decryptedText = "";
-  y = y + b / a;
-  y = pow(y, 2).toDouble();
-  String tableString = (y).round().toString().replaceAll(".0", "");
+  String encryptedString = '';
+
   for (int i = 0; i < tableString.length; i += 2) {
     int char = int.parse(tableString[i] + tableString[i + 1]);
-    decryptedText += alphabetPl[char]!;
+    if (i / 2 % 2 == 0) {
+      encryptedString += ((char + a) % 100).toString();
+    } else {
+      encryptedString += ((char + b) % 100).toString();
+    }
+  }
+
+  return encryptedString;
+}
+
+String decrypt(String tableString, int a, int b, Map<int, String> alphabet) {
+  String decryptedText = "";
+
+  for (int i = 0; i < tableString.length; i += 2) {
+    int char = int.parse(tableString[i] + tableString[i + 1]);
+    if (i / 2 % 2 == 0) {
+      while (char - a < 0) {
+        char += 100;
+      }
+      decryptedText += alphabet[(char - a)]!;
+    } else {
+      while (char - b < 0) {
+        char += 100;
+      }
+      decryptedText += alphabet[(char - b)]!;
+    }
   }
 
   return decryptedText;

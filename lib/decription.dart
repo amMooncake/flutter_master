@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:flutter_master/key.dart';
 import 'package:flutter_master/pixel.dart';
 // import 'package:flutter_master/key.dart';
 import 'package:flutter_master/encryption_logic.dart';
@@ -50,7 +51,7 @@ class _MyDecriptionState extends State<MyDecription> {
     }
     decryptedText = "**Błąd**";
     setState(() {});
-    decryptedText = decrypt(double.parse(text), int.parse(a), int.parse(b)).toString();
+    decryptedText = decrypt(text, int.parse(a), int.parse(b), widget.alphabet).toString();
     // encryptedText = "$a, $b, $text";
     setState(() {});
   }
@@ -77,8 +78,11 @@ class _MyDecriptionState extends State<MyDecription> {
                         flex: 8,
                         child: GridView.builder(
                           itemCount: 8 * 6,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 8,
+                            childAspectRatio: MediaQuery.of(context).size.width /
+                                (MediaQuery.of(context).size.height / 1.3),
+                          ),
                           itemBuilder: (context, index) {
                             index += 1;
                             if (index == 1) {

@@ -51,7 +51,7 @@ class _MyEncryptionState extends State<MyEncryption> {
     }
     encryptedText = "Błąd";
     setState(() {});
-    encryptedText = encrypt(text, int.parse(a), int.parse(b)).toString();
+    encryptedText = encrypt(text, int.parse(a), int.parse(b), alphabet).toString();
     // encryptedText = "$a, $b, $text";
     setState(() {});
   }
@@ -93,23 +93,30 @@ class _MyEncryptionState extends State<MyEncryption> {
                       Expanded(child: Text("klucz 1", style: Theme.of(context).textTheme.displayLarge)),
                       Expanded(
                         flex: 8,
-                        child: GridView.builder(
-                          itemCount: 8 * 6,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 8),
-                          itemBuilder: (context, index) {
-                            index += 1;
-                            if (index == 1) {
-                              return const MyPixel(innerColor: Colors.grey, value: null);
-                            } else if (MyEncryption.borders.contains(index)) {
-                              return MyPixel(
-                                  innerColor: Colors.red[300]!,
-                                  value:
-                                      index < 9 ? (index - 1).toString() : ((index - 1) / 8).toString());
-                            } else {
-                              return MyPixel(innerColor: Colors.green[300]!, value: alphabet[index]);
-                            }
-                          },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: GridView.builder(
+                            itemCount: 8 * 6,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 8,
+                              childAspectRatio: MediaQuery.of(context).size.width /
+                                  (MediaQuery.of(context).size.height / 1.3),
+                            ),
+                            itemBuilder: (context, index) {
+                              index += 1;
+                              if (index == 1) {
+                                return const MyPixel(innerColor: Colors.grey, value: null);
+                              } else if (MyEncryption.borders.contains(index)) {
+                                return MyPixel(
+                                    innerColor: Colors.red[300]!,
+                                    value: index < 9
+                                        ? (index - 1).toString()
+                                        : ((index - 1) / 8).toString());
+                              } else {
+                                return MyPixel(innerColor: Colors.green[300]!, value: alphabet[index]);
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ],
