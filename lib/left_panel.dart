@@ -6,6 +6,12 @@ class MyLeftPanel extends StatelessWidget {
   final Color left;
   final Color reset;
   final Color accept;
+  final double myPadding;
+  final TextEditingController textController;
+  final TextEditingController outputText;
+  final TextEditingController kluczController;
+  final VoidCallback greenButtonPressed;
+  final VoidCallback clearScreen;
 
   const MyLeftPanel({
     super.key,
@@ -13,6 +19,12 @@ class MyLeftPanel extends StatelessWidget {
     required this.left,
     required this.reset,
     required this.accept,
+    required this.myPadding,
+    required this.textController,
+    required this.kluczController,
+    required this.greenButtonPressed,
+    required this.outputText,
+    required this.clearScreen,
   });
 
   @override
@@ -21,10 +33,10 @@ class MyLeftPanel extends StatelessWidget {
       Expanded(
         flex: 3,
         child: Padding(
-          padding: const EdgeInsets.only(
-            left: 10,
-            top: 10,
-            bottom: 10,
+          padding: EdgeInsets.only(
+            left: myPadding,
+            top: myPadding,
+            bottom: myPadding,
           ),
           child: ClipRRect(
             borderRadius: myRadious,
@@ -34,13 +46,13 @@ class MyLeftPanel extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "tekst",
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(),
-                    ),
-                    const SizedBox(height: 50),
-                    const MyTextField(),
+                    Text("tekst", style: Theme.of(context).textTheme.displayMedium!.copyWith()),
+                    MyTextField(myController: textController),
+                    const SizedBox(height: 30),
+                    Text("klucz", style: Theme.of(context).textTheme.displayMedium!.copyWith()),
+                    MyTextField(myController: kluczController),
                   ],
                 ),
               ),
@@ -53,9 +65,9 @@ class MyLeftPanel extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  bottom: 10,
+                padding: EdgeInsets.only(
+                  left: myPadding,
+                  bottom: myPadding,
                 ),
                 child: ClipRRect(
                   borderRadius: myRadious,
@@ -64,8 +76,8 @@ class MyLeftPanel extends StatelessWidget {
                     child: Material(
                       color: reset,
                       child: InkWell(
-                        onTap: () {},
-                        child: Icon(Icons.refresh, size: 75),
+                        onTap: clearScreen,
+                        child: const Icon(Icons.refresh, size: 75),
                       ),
                     ),
                   ),
@@ -75,7 +87,7 @@ class MyLeftPanel extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 10, left: 10),
+                padding: EdgeInsets.only(bottom: myPadding, left: myPadding),
                 child: ClipRRect(
                   borderRadius: myRadious,
                   child: SizedBox(
@@ -83,8 +95,8 @@ class MyLeftPanel extends StatelessWidget {
                     child: Material(
                       color: accept,
                       child: InkWell(
-                        onTap: () {},
-                        child: Icon(Icons.check, size: 75),
+                        onTap: greenButtonPressed,
+                        child: const Icon(Icons.check, size: 75),
                       ),
                     ),
                   ),

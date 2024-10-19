@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
-  const MyTextField({super.key});
+  final TextEditingController myController;
+
+  const MyTextField({super.key, required this.myController});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: myController,
       keyboardType: TextInputType.multiline,
-      minLines: 1,
-      maxLines: 6,
-      cursorColor: Colors.white,
-      style: Theme.of(context).textTheme.bodyLarge!.copyWith(),
+      cursorColor: Colors.black,
+      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 25),
       decoration: const InputDecoration(
         hoverColor: Colors.red,
         enabledBorder: OutlineInputBorder(
@@ -18,7 +19,7 @@ class MyTextField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 6),
+          borderSide: BorderSide(color: Colors.white, width: 36),
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
