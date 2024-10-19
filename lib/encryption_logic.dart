@@ -1,8 +1,7 @@
 // import 'dart:math';
 // import 'package:flutter_master/key.dart';
 
-String text = "ala 123123ma kot 1!@#!@#  ///";
-String stringInAlphabet = "aąbcćdeęfghijklłmnńoóprsśtuwyzźż";
+String stringInAlphabet = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż";
 
 String encrypt(String text, int a, int b, Map<int, String> alphabet) {
   String tableString = "";
