@@ -8,6 +8,8 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      minLines: 1,
+      maxLines: 2,
       controller: myController,
       keyboardType: TextInputType.multiline,
       cursorColor: Colors.black,
@@ -19,8 +21,8 @@ class MyTextField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 36),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderSide: BorderSide(color: Colors.white, width: 50),
+          borderRadius: BorderRadius.all(Radius.circular(29)),
         ),
       ),
     );

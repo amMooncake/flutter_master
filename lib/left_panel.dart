@@ -44,16 +44,18 @@ class MyLeftPanel extends StatelessWidget {
               color: left,
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text("tekst", style: Theme.of(context).textTheme.displayMedium!.copyWith()),
-                    MyTextField(myController: textController),
-                    const SizedBox(height: 30),
-                    Text("klucz", style: Theme.of(context).textTheme.displayMedium!.copyWith()),
-                    MyTextField(myController: kluczController),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("tekst", style: Theme.of(context).textTheme.displayMedium!.copyWith()),
+                      MyTextField(myController: textController),
+                      const SizedBox(height: 30),
+                      Text("klucz", style: Theme.of(context).textTheme.displayMedium!.copyWith()),
+                      MyTextField(myController: kluczController),
+                    ],
+                  ),
                 ),
               ),
             ),

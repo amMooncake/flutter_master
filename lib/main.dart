@@ -92,7 +92,7 @@ class _MainAppState extends State<MainApp> {
                     child: Column(
                       children: [
                         Expanded(
-                          flex: encryption ? 2 : 1,
+                          flex: 1,
                           child: Padding(
                             padding: EdgeInsets.only(right: myPadding, top: myPadding, left: myPadding),
                             child: ClipRRect(
@@ -117,7 +117,6 @@ class _MainAppState extends State<MainApp> {
                           ),
                         ),
                         Expanded(
-                          flex: !encryption ? 2 : 1,
                           child: Padding(
                             padding: EdgeInsets.all(myPadding),
                             child: ClipRRect(
