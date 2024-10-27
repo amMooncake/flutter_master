@@ -73,7 +73,13 @@ class _HomePageState extends State<HomePage> {
                 child: ValueInput(keyTextController: valueTextController, encrypt: encrypt),
               ),
             ),
-            Expanded(flex: 1, child: Text(wynik)),
+            Expanded(
+              flex: 1,
+              child: SelectableText(
+                wynik,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 30),
+              ),
+            ),
           ],
         ),
       ),

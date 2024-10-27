@@ -110,8 +110,6 @@ String playFireEncription(String tekst, String key) {
     }
   }
 
-  print(newAlphabet);
-
   tekst = tekstRefactor(tekst);
   var tekstList = tekst.split(' ');
   for (int i = 0; i < tekstList.length; i++) {
