@@ -61,7 +61,57 @@ int getLetterColumn(String letter) {
   return -1;
 }
 
-String playFireEncription(String tekst) {
+String filterUniqueCharacters(String input) {
+  input = input.toLowerCase().replaceAll(RegExp(r'[^a-ząćęłńóśźż]'), '');
+  Set<String> seenCharacters = {};
+  StringBuffer uniqueString = StringBuffer();
+
+  for (int i = 0; i < input.length; i++) {
+    String currentChar = input[i];
+    if (!seenCharacters.contains(currentChar)) {
+      seenCharacters.add(currentChar);
+      uniqueString.write(currentChar);
+    }
+  }
+
+  return uniqueString.toString();
+}
+
+String alphabetStringFromKey(String key) {
+  key = filterUniqueCharacters(key);
+  String alphabetString = '';
+  for (int i = 0; i < alphabet.length; i++) {
+    for (int j = 0; j < alphabet[i].length; j++) {
+      alphabetString += alphabet[i][j];
+    }
+  }
+  for (int i = key.length - 1; i >= 0; i--) {
+    alphabetString = alphabetString.replaceAll(key[i], '');
+    alphabetString = key[i] + alphabetString;
+  }
+
+  return alphabetString;
+}
+
+String playFireEncription(String tekst, String key) {
+  String alphabetfromKey = alphabetStringFromKey(key);
+
+  var newAlphabet = [
+    ['a', 'ą', 'b', 'c', 'ć', 'd', 'e'],
+    ['ę', 'f', 'g', 'h', 'i', 'j', 'k'],
+    ['l', 'ł', 'm', 'n', 'ń', 'o', 'ó'],
+    ['p', 'q', 'r', 's', 'ś', 't', 'u'],
+    ['w', 'v', 'x', 'y', 'z', 'ź', 'ż'],
+  ];
+
+  for (int i = 0; i < alphabet.length; i++) {
+    for (int j = 0; j < alphabet[i].length; j++) {
+      newAlphabet[i][j] = alphabetfromKey[i * alphabet[i].length + j];
+    }
+  }
+
+  print(newAlphabet);
+
   tekst = tekstRefactor(tekst);
   var tekstList = tekst.split(' ');
   for (int i = 0; i < tekstList.length; i++) {
@@ -73,11 +123,12 @@ String playFireEncription(String tekst) {
     int col2 = getLetterColumn(char2);
     if (row1 == row2) {
       tekstList[i] =
-          '${alphabet[row1][(col1 + 1) % alphabet[0].length]}${alphabet[row2][(col2 + 1) % alphabet[0].length]}';
+          '${newAlphabet[row1][(col1 + 1) % newAlphabet[0].length]}${newAlphabet[row2][(col2 + 1) % newAlphabet[0].length]}';
     } else if (col1 == col2) {
-      tekstList[i] = '${alphabet[(row1 + 1) % alphabet.length][col1]}${alphabet[(row2 + 1) % 5][col2]}';
+      tekstList[i] =
+          '${newAlphabet[(row1 + 1) % newAlphabet.length][col1]}${newAlphabet[(row2 + 1) % 5][col2]}';
     } else {
-      tekstList[i] = '${alphabet[row1][col2]}${alphabet[row2][col1]}';
+      tekstList[i] = '${newAlphabet[row1][col2]}${newAlphabet[row2][col1]}';
     }
   }
 
@@ -107,10 +158,6 @@ String playFireDecription(String tekst) {
 }
 
 void main() {
-  String tekst = 'wiki!pedia /!@!1 jest 235naj124lepszauża';
-  print(tekst);
-  String encrypted = playFireEncription(tekst);
-  print(encrypted);
-  String decrypted = playFireDecription(encrypted);
-  print(decrypted);
+  String tekst = 'wiki!pedixxxa /!@!1 jest 235naj124lepszauża';
+  print(playFireEncription(tekst, '0'));
 }

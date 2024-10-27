@@ -1,110 +1,82 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+import 'playfire_logic.dart';
+
+import 'alphabet_grid_widget.dart';
+import 'widgets/key_input_widget.dart';
+import 'widgets/value_input_widget.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  TextEditingController keyTextController = TextEditingController();
+  TextEditingController valueTextController = TextEditingController();
+  String? alphabet;
+  String wynik = 'Wynik';
+
+  @override
+  void dispose() {
+    keyTextController.dispose();
+    valueTextController.dispose();
+    super.dispose();
+  }
+
+  void alphabetGridEdit(String key) {
+    setState(() {
+      alphabet = alphabetStringFromKey(key);
+    });
+  }
+
+  void encrypt(String key) {
+    String value = valueTextController.text;
+    String result = playFireEncription(valueTextController.text, keyTextController.text);
+    setState(() {
+      wynik = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    // double screenWidth = MediaQuery.of(context).size.width;
+    // double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
-        color: Colors.red,
+        color: Colors.grey[200],
         child: Column(
           children: [
             Expanded(
+              flex: 3,
               child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8,
-                    childAspectRatio: screenHeight * 1 / screenWidth * 1,
-                    crossAxisSpacing: 3,
-                    mainAxisSpacing: 3,
-                  ),
-                  itemCount: 8 * 6,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      color: Colors.orange,
-                      child: Center(
-                        child: Text((index).toString()),
-                      ),
-                    );
-                  },
-                ),
+                padding: EdgeInsets.all(10),
+                child: AlphabetGrid(alphabetString: alphabet),
               ),
             ),
-            Expanded(child: Center(child: Text('Hello world!'))),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child:
+                    KeyInput(keyTextController: keyTextController, alphabetGridEdit: alphabetGridEdit),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: ValueInput(keyTextController: valueTextController, encrypt: encrypt),
+              ),
+            ),
+            Expanded(flex: 1, child: Text(wynik)),
           ],
         ),
       ),
     );
   }
 }
-
-// Container(
-//         width: screenWidth * 0.8,
-//         height: screenHeight * 0.4,
-//         child: Column(
-//           children: [
-//             Expanded(
-//               child: Row(
-//                 children: List.generate(8, (index) {
-//                   if (index == 0) {
-//                     return Expanded(
-//                       child: Container(
-//                         color: Colors.red,
-//                       ),
-//                     );
-//                   }
-
-//                   return Expanded(
-//                     child: Container(
-//                       color: Colors.blue,
-//                       child: Center(
-//                         child: Text((index).toString()),
-//                       ),
-//                     ),
-//                   );
-//                 }),
-//               ),
-//             ),
-//             Expanded(
-//               flex: 5,
-//               child: Row(
-//                 children: [
-//                   Expanded(
-//                     flex: 1,
-//                     child: Column(
-//                       children: List.generate(5, (index) {
-//                         return Expanded(
-//                           child: Container(
-//                             color: Colors.blue,
-//                             child: Center(
-//                               child: Text((index + 1).toString()),
-//                             ),
-//                           ),
-//                         );
-//                       }),
-//                     ),
-//                   ),
-//                   Expanded(
-//                     flex: 7,
-//                     child: GridView.extent(
-//                       maxCrossAxisExtent: screenHeight * 0.1,
-//                       children: List.generate(35, (index) {
-//                         return Container(
-//                           color: Colors.orange,
-//                           child: Center(
-//                             child: Text((index + 1).toString()),
-//                           ),
-//                         );
-//                       }),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
