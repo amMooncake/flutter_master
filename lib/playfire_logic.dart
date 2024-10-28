@@ -43,19 +43,19 @@ String tekstRefactor(String tekst) {
   return refactored;
 }
 
-int getLetterRow(String letter) {
-  for (int i = 0; i < alphabet.length; i++) {
-    if (alphabet[i].contains(letter)) {
+int getLetterRow(String letter, List<List<String>> newAlphabet) {
+  for (int i = 0; i < newAlphabet.length; i++) {
+    if (newAlphabet[i].contains(letter)) {
       return i;
     }
   }
   return -1;
 }
 
-int getLetterColumn(String letter) {
+int getLetterColumn(String letter, List<List<String>> newAlphabet) {
   for (int i = 0; i < alphabet.length; i++) {
-    if (alphabet[i].contains(letter)) {
-      return alphabet[i].indexOf(letter);
+    if (newAlphabet[i].contains(letter)) {
+      return newAlphabet[i].indexOf(letter);
     }
   }
   return -1;
@@ -115,10 +115,10 @@ String playFireEncription(String tekst, String key) {
   for (int i = 0; i < tekstList.length; i++) {
     String char1 = tekstList[i][0];
     String char2 = tekstList[i][1];
-    int row1 = getLetterRow(char1);
-    int row2 = getLetterRow(char2);
-    int col1 = getLetterColumn(char1);
-    int col2 = getLetterColumn(char2);
+    int row1 = getLetterRow(char1, newAlphabet);
+    int row2 = getLetterRow(char2, newAlphabet);
+    int col1 = getLetterColumn(char1, newAlphabet);
+    int col2 = getLetterColumn(char2, newAlphabet);
     if (row1 == row2) {
       tekstList[i] =
           '${newAlphabet[row1][(col1 + 1) % newAlphabet[0].length]}${newAlphabet[row2][(col2 + 1) % newAlphabet[0].length]}';
@@ -133,22 +133,39 @@ String playFireEncription(String tekst, String key) {
   return tekstList.join(' ');
 }
 
-String playFireDecription(String tekst) {
+String playFireDecription(String tekst, String key) {
+  String alphabetfromKey = alphabetStringFromKey(key);
+
+  var newAlphabet = [
+    ['a', 'ą', 'b', 'c', 'ć', 'd', 'e'],
+    ['ę', 'f', 'g', 'h', 'i', 'j', 'k'],
+    ['l', 'ł', 'm', 'n', 'ń', 'o', 'ó'],
+    ['p', 'q', 'r', 's', 'ś', 't', 'u'],
+    ['w', 'v', 'x', 'y', 'z', 'ź', 'ż'],
+  ];
+
+  for (int i = 0; i < alphabet.length; i++) {
+    for (int j = 0; j < alphabet[i].length; j++) {
+      newAlphabet[i][j] = alphabetfromKey[i * alphabet[i].length + j];
+    }
+  }
+
   var tekstList = tekst.split(' ');
   for (int i = 0; i < tekstList.length; i++) {
     String char1 = tekstList[i][0];
     String char2 = tekstList[i][1];
-    int row1 = getLetterRow(char1);
-    int row2 = getLetterRow(char2);
-    int col1 = getLetterColumn(char1);
-    int col2 = getLetterColumn(char2);
+    int row1 = getLetterRow(char1, newAlphabet);
+    int row2 = getLetterRow(char2, newAlphabet);
+    int col1 = getLetterColumn(char1, newAlphabet);
+    int col2 = getLetterColumn(char2, newAlphabet);
     if (row1 == row2) {
       tekstList[i] =
-          '${alphabet[row1][(col1 - 1) % alphabet[0].length]}${alphabet[row2][(col2 - 1) % alphabet[0].length]}';
+          '${newAlphabet[row1][(col1 - 1) % newAlphabet[0].length]}${newAlphabet[row2][(col2 - 1) % newAlphabet[0].length]}';
     } else if (col1 == col2) {
-      tekstList[i] = '${alphabet[(row1 - 1) % alphabet.length][col1]}${alphabet[(row2 - 1) % 5][col2]}';
+      tekstList[i] =
+          '${newAlphabet[(row1 - 1) % newAlphabet.length][col1]}${newAlphabet[(row2 - 1) % 5][col2]}';
     } else {
-      tekstList[i] = '${alphabet[row1][col2]}${alphabet[row2][col1]}';
+      tekstList[i] = '${newAlphabet[row1][col2]}${newAlphabet[row2][col1]}';
     }
   }
 
@@ -156,6 +173,7 @@ String playFireDecription(String tekst) {
 }
 
 void main() {
-  String tekst = 'wiki!pedixxxa /!@!1 jest 235naj124lepszauża';
-  print(playFireEncription(tekst, '0'));
+  String tekst = 'aleksy';
+  print(playFireEncription(tekst, 'dupa'));
+  print(playFireDecription('pł kó rz', 'dupa'));
 }

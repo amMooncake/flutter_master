@@ -3,9 +3,9 @@ import 'my_text_field_widget.dart';
 
 class ValueInput extends StatelessWidget {
   final TextEditingController keyTextController;
-  final Function encrypt;
+  final Function function;
 
-  const ValueInput({super.key, required this.keyTextController, required this.encrypt});
+  const ValueInput({super.key, required this.keyTextController, required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ValueInput extends StatelessWidget {
           flex: 3,
           child: MyTextField(
             myController: keyTextController,
-            hintText: 'Wprowadź klucz',
+            hintText: 'Wprowadź zdanie',
           ),
         ),
         SizedBox(width: screenWidth * 0.05),
@@ -25,7 +25,7 @@ class ValueInput extends StatelessWidget {
           flex: 1,
           child: ElevatedButton(
             onPressed: () {
-              encrypt(keyTextController.text);
+              function(keyTextController.text);
             },
             child: const Text("wyślij"),
           ),
