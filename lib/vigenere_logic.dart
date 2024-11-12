@@ -22,32 +22,17 @@ String undeToKey(String unencrypted, String key) {
   return unencryptedKey;
 }
 
-// String encrypt(String unencrypted, String key) {
-//   unencrypted = filterUnencrypted(unencrypted);
-//   String unencryptedKey = undeToKey(unencrypted, key);
-//   String encrypted = '';
-//   int row = 0;
-//   int column = 0;
-//   int charPosition = 0;
-//   for (int i = 0; i < unencrypted.length; i++) {
-//     row = alphabet.indexOf(unencrypted[i]) + 1;
-//     column = alphabet.indexOf(unencryptedKey[i]) + 1;
-//     charPosition = (row + column - 2) % alphabet.length;
-//     encrypted += alphabet[charPosition];
-//   }
-//   return encrypted;
-// }
-
-//  /|\ easier to read /|\
-
 String encrypt(String unencrypted, String key) {
   unencrypted = filterUnencrypted(unencrypted);
   String unencryptedKey = undeToKey(unencrypted, key);
   String encrypted = '';
+  int row = 0;
+  int column = 0;
   int charPosition = 0;
   for (int i = 0; i < unencrypted.length; i++) {
-    charPosition =
-        (alphabet.indexOf(unencrypted[i]) + alphabet.indexOf(unencryptedKey[i])) % alphabet.length;
+    row = alphabet.indexOf(unencrypted[i]) + 1;
+    column = alphabet.indexOf(unencryptedKey[i]) + 1;
+    charPosition = (row + column - 2) % alphabet.length;
     encrypted += alphabet[charPosition];
   }
   return encrypted;
