@@ -1,6 +1,3 @@
-// import 'dart:math';
-// import 'package:flutter_master/key.dart';
-
 String stringInAlphabet = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż";
 
 String encrypt(String text, int a, int b, Map<int, String> alphabet) {
@@ -48,7 +45,4 @@ String decrypt(String tableString, int a, int b, Map<int, String> alphabet) {
   return decryptedText;
 }
 
-void main() {
-  // print(encrypt(text, 2, 3));
-  // print(decrypt(encrypt(text, 2, 3), 2, 3));
-}
+void main() {}

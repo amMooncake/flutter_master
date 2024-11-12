@@ -60,8 +60,8 @@ class _MyEncryptionState extends State<MyEncryption> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFeae2b7),
-        title: Text("Enkrypcja"),
+        backgroundColor: const Color(0xFFeae2b7),
+        title: const Text("Enkrypcja"),
         actions: [
           TextButton.icon(
             onPressed: () {
