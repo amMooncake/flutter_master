@@ -1,7 +1,10 @@
-import 'package:flutter_master/prime_numbers.dart';
 import 'dart:math';
 
 Random random = Random();
+
+String filterString(String text) {
+  return text.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+}
 
 // losowy numer:
 bool isPrime(int number) {
@@ -14,7 +17,7 @@ bool isPrime(int number) {
   return true;
 }
 
-int generatePrimeNumber(int min, int max) {
+int generatePrimeNumber({int min = 1000, int max = 9999}) {
   int prime;
   do {
     prime = min + random.nextInt(max - min + 1);
@@ -112,23 +115,69 @@ int decryption(int p, int q, int numText, List<int> dlock) {
   return decryptedNum;
 }
 
+class RsaObject {
+  int? p;
+  int? q;
+  List<int>? publickey;
+  List<int>? privateKey;
+  String text;
+  List<int> encryptedListCodeUnits = [];
+  String dectyptedText = '';
+
+  RsaObject({required this.text});
+
+  void generateNewPrime() {
+    p = generatePrimeNumber();
+    q = generatePrimeNumber();
+  }
+
+  void generateKeys() {
+    publickey = getPublickey(p!, q!);
+    privateKey = getPrivateKey(p!, q!, publickey!);
+  }
+
+  void encrypt() {
+    text = filterString(text);
+    encryptedListCodeUnits = text.codeUnits;
+    encryptedListCodeUnits = encryptedListCodeUnits.map((e) => encryption(publickey!, e)).toList();
+  }
+
+  void decrypt() {
+    List<int> decryptedListUnitsCode =
+        encryptedListCodeUnits.map((e) => decryption(p!, q!, e, privateKey!)).toList();
+    dectyptedText = String.fromCharCodes(decryptedListUnitsCode);
+  }
+}
+
 void main() {
-  int numText = 1;
+  String text = 'aleksy malawski';
 
-  String text = 'alek';
-  List<int> listOfUnitsCodes = text.codeUnits;
+  RsaObject rsa = RsaObject(text: text);
+  rsa.generateNewPrime();
 
-  int p = generatePrimeNumber(1000, 9999);
-  int q = generatePrimeNumber(1000, 9999);
-  print('p: $p  q: $q');
-  List<int> key = getPublickey(p, q);
-  List<int> pKey = getPrivateKey(p, q, key);
-  print('public key: ${key}');
-  print('private key: ${pKey}');
-  print(listOfUnitsCodes);
-  listOfUnitsCodes = listOfUnitsCodes.map((e) => encryption(key, e)).toList();
-  print(listOfUnitsCodes);
+  rsa.text = text;
 
-  listOfUnitsCodes = listOfUnitsCodes.map((e) => decryption(p, q, e, pKey)).toList();
-  print(String.fromCharCodes(listOfUnitsCodes));
+  print('text: ${rsa.text}');
+
+  print(rsa.p);
+  print(rsa.q);
+
+  print('p: ${rsa.p}  q: ${rsa.q}');
+
+  rsa.generateKeys();
+
+  print('public key: ${rsa.publickey}');
+  print('private key: ${rsa.privateKey}');
+
+  rsa.encrypt();
+  print('encrypted: ${rsa.encryptedListCodeUnits}');
+
+  rsa.decrypt();
+  print(rsa.dectyptedText);
+
+  // listCodeUnits = listCodeUnits.map((e) => encryption(key, e)).toList();
+  // print(listCodeUnits);
+
+  // listCodeUnits = listCodeUnits.map((e) => (decryption(p, q, e, pKey))).toList();
+  // print(String.fromCharCodes(listCodeUnits));
 }
