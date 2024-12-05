@@ -122,7 +122,10 @@ class RsaObject {
   List<int>? privateKey;
   String text;
   List<int> encryptedListCodeUnits = [];
+  String encryptedText = '';
   String dectyptedText = '';
+
+  List<int> howLong = [];
 
   RsaObject({required this.text});
 
@@ -146,11 +149,17 @@ class RsaObject {
     List<int> decryptedListUnitsCode =
         encryptedListCodeUnits.map((e) => decryption(p!, q!, e, privateKey!)).toList();
     dectyptedText = String.fromCharCodes(decryptedListUnitsCode);
+    print(dectyptedText);
+  }
+
+  void makeItLookGoodXD() {
+    howLong = encryptedListCodeUnits.map((e) => e.toString().length).toList();
+    encryptedText = encryptedListCodeUnits.join('');
   }
 }
 
 void main() {
-  String text = 'aleksy malawski';
+  String text = 'aleksy';
 
   RsaObject rsa = RsaObject(text: text);
   rsa.generateNewPrime();
@@ -175,9 +184,6 @@ void main() {
   rsa.decrypt();
   print(rsa.dectyptedText);
 
-  // listCodeUnits = listCodeUnits.map((e) => encryption(key, e)).toList();
-  // print(listCodeUnits);
-
-  // listCodeUnits = listCodeUnits.map((e) => (decryption(p, q, e, pKey))).toList();
-  // print(String.fromCharCodes(listCodeUnits));
+  rsa.makeItLookGoodXD();
+  print(rsa.encryptedText);
 }

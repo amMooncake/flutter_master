@@ -1,31 +1,50 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_master/main.dart';
-import 'package:flutter_master/screens/decryption_screen.dart';
 import 'package:flutter_master/widgets/my_button.dart';
 import 'package:flutter_master/widgets/my_text_field.dart';
 
 import 'package:flutter_master/models/logic.dart';
 
-class EncryptionScreen extends StatefulWidget {
-  const EncryptionScreen({super.key});
+class DecryptionScreen extends StatefulWidget {
+  const DecryptionScreen({super.key, required this.rsa});
+  final RsaObject rsa;
 
   @override
-  State<EncryptionScreen> createState() => _EncryptionScreenState();
+  State<DecryptionScreen> createState() => _DecryptionScreenState();
 }
 
-class _EncryptionScreenState extends State<EncryptionScreen> {
+class _DecryptionScreenState extends State<DecryptionScreen> {
   TextEditingController pController = TextEditingController();
   TextEditingController qController = TextEditingController();
   TextEditingController textController = TextEditingController();
 
   RsaObject rsa = RsaObject(text: '');
+  String privateKey = '';
+  String publicKey = '';
+
   @override
   void dispose() {
     // Dispose controllers to free resources
     pController.dispose();
     qController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    rsa = widget.rsa;
+    pController.text = widget.rsa.p.toString();
+    qController.text = widget.rsa.q.toString();
+    textController.text = widget.rsa.encryptedText;
+    privateKey = widget.rsa.privateKey.toString();
+    publicKey = widget.rsa.publickey.toString();
+
+    print('1: ${rsa.dectyptedText}');
+    print('2: ${rsa.encryptedListCodeUnits}');
+    print('3: ${rsa.privateKey}');
+    print('4: ${rsa.publickey}');
   }
 
   bool isNumeric(String s) {
@@ -60,10 +79,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     generateKeys();
   }
 
-  void enryptText(String text) {
-    rsa.text = text;
-    rsa.encrypt();
-    rsa.makeItLookGoodXD();
+  void decryptText(String text) {
+    rsa.decrypt();
     setState(() {});
   }
 
@@ -72,17 +89,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.colorScheme.primaryContainer,
-        title: const Text("RSA Encryption"),
-        actions: [
-          TextButton.icon(
-            label: const Text("Decryption"),
-            icon: const Icon(Icons.lock_open_outlined),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => DecryptionScreen(rsa: rsa)));
-            },
-          ),
-        ],
+        title: const Text("RSA Decryption"),
       ),
       body: Center(
         child: Padding(
@@ -122,22 +129,17 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Icon(Icons.key),
-                                  SizedBox(width: 8),
-                                  SingleChildScrollView(
-                                      child: Text(rsa.publickey == null
-                                          ? 'public key will show here'
-                                          : rsa.publickey.toString())),
+                                  const Icon(Icons.key),
+                                  const SizedBox(width: 8),
+                                  Text(publicKey),
                                 ],
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Row(
                                 children: [
-                                  Icon(Icons.key_off),
-                                  SizedBox(width: 8),
-                                  Text(rsa.privateKey == null
-                                      ? 'private key will show here'
-                                      : rsa.privateKey.toString())
+                                  const Icon(Icons.key_off),
+                                  const SizedBox(width: 8),
+                                  Text(privateKey),
                                 ],
                               ),
                             ],
@@ -153,20 +155,15 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         MyTextField(
-                          labelText: "Insert text to encrypt",
+                          labelText: "Insert text to decrypt",
                           controller: textController,
                         ),
-                        const SizedBox(height: 46),
+                        const SizedBox(height: 96),
                         MyButton(
-                            text: "Generate random prime numbers",
-                            icon: Icons.shuffle,
-                            onPressed: onPressedGenerateRandom),
-                        const SizedBox(height: 20),
-                        MyButton(
-                          text: "Encrypt",
+                          text: "Decrypt",
                           icon: Icons.add_circle_outline,
                           onPressed: () {
-                            enryptText(textController.text);
+                            decryptText(textController.text);
                           },
                         ),
                       ],
@@ -183,9 +180,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                   // border: Border.all(color: Colors.black.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: SelectableText(rsa.encryptedListCodeUnits.isEmpty
-                    ? "Encrypted text will show here"
-                    : rsa.encryptedText),
+                child: SelectableText(
+                    rsa.dectyptedText.isEmpty ? "Encrypted text will show here" : rsa.dectyptedText),
               ),
             ],
           ),
