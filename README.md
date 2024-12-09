@@ -1,3 +1,3 @@
 # flutter_master
 
-A new Flutter project.
+I store here my school/learning flutter projects
