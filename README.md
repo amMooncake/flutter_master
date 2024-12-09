@@ -1,3 +1,3 @@
 # flutter_master
 
-I store here my school/learning flutter projects
+I store here my school/learning related flutter projects
