@@ -27,6 +27,19 @@ class MainApp extends StatelessWidget {
 
     final theme = ThemeData(
       colorScheme: colorScheme,
+      cardTheme: CardTheme(
+        color: colorScheme.surfaceContainer,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(
+        colorScheme.primaryContainer,
+      ))),
+      snackBarTheme: SnackBarThemeData(
+          backgroundColor: colorScheme.error,
+          contentTextStyle: const TextStyle(
+            color: Colors.white,
+          )),
     );
 
     return MaterialApp(
