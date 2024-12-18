@@ -21,7 +21,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.fromSeed(
-      brightness: MediaQuery.platformBrightnessOf(context),
+      // brightness: MediaQuery.platformBrightnessOf(context),
+      brightness: Brightness.light,
       seedColor: Colors.blue,
     );
 
@@ -31,15 +32,23 @@ class MainApp extends StatelessWidget {
         color: colorScheme.surfaceContainer,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(
-        colorScheme.primaryContainer,
-      ))),
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(
+            colorScheme.primaryContainer,
+          ),
+        ),
+      ),
       snackBarTheme: SnackBarThemeData(
-          backgroundColor: colorScheme.error,
-          contentTextStyle: const TextStyle(
-            color: Colors.white,
-          )),
+        backgroundColor: colorScheme.error,
+        contentTextStyle: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(colorScheme.primary),
+        ),
+      ),
     );
 
     return MaterialApp(

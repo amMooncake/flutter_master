@@ -1,6 +1,8 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // widgets
@@ -18,16 +20,22 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    super.dispose();
+  }
+
   bool _isLogin = true;
   String _enteredEmail = '';
   String _enteredPassword = '';
+  String _enteredUsername = '';
   File? _selectedImage;
   bool _isAuthenticating = false;
 
   void _submit() async {
-    setState(() {
-      _isAuthenticating = true;
-    });
+    _isAuthenticating = true;
+    setState(() {});
 
     final isValid = _formKey.currentState!.validate();
 
@@ -38,6 +46,8 @@ class _AuthScreenState extends State<AuthScreen> {
           content: Text('Error occurred. Please check your input.'),
         ),
       );
+      _isAuthenticating = false;
+      setState(() {});
       return;
     }
 
@@ -53,7 +63,11 @@ class _AuthScreenState extends State<AuthScreen> {
         final storageRef = FirebaseStorage.instance.ref().child('user_images').child('${userCredential.user!.uid}.jpg');
         await storageRef.putFile(_selectedImage!);
         final imageUrl = await storageRef.getDownloadURL();
-        print(imageUrl);
+        await FirebaseFirestore.instance.collection('users').doc('${userCredential.user!.uid}').set({
+          'userName': _enteredUsername,
+          'email': _enteredEmail,
+          'image_url': imageUrl,
+        });
       }
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -62,9 +76,8 @@ class _AuthScreenState extends State<AuthScreen> {
           content: Text(error.message ?? 'An error occurred'),
         ),
       );
-      setState(() {
-        _isAuthenticating = false;
-      });
+      _isAuthenticating = false;
+      setState(() {});
     }
   }
 
@@ -98,19 +111,34 @@ class _AuthScreenState extends State<AuthScreen> {
                           children: [
                             if (!_isLogin) UserImagePicker(onPickImage: (pickedImage) => _selectedImage = pickedImage),
                             TextFormField(
-                                decoration: const InputDecoration(labelText: 'Email Adress'),
-                                keyboardType: TextInputType.emailAddress,
-                                autocorrect: false,
-                                textCapitalization: TextCapitalization.none,
-                                onSaved: (value) {
-                                  _enteredEmail = value!;
-                                },
+                              decoration: const InputDecoration(labelText: 'Email Adress'),
+                              keyboardType: TextInputType.emailAddress,
+                              autocorrect: false,
+                              textCapitalization: TextCapitalization.none,
+                              onSaved: (value) {
+                                _enteredEmail = value!;
+                              },
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty || !value.contains('@')) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
+                            ),
+                            if (!_isLogin)
+                              TextFormField(
+                                decoration: const InputDecoration(labelText: 'Username'),
+                                enableSuggestions: false,
                                 validator: (value) {
-                                  if (value == null || value.trim().isEmpty || !value.contains('@')) {
-                                    return 'Please enter a valid email address';
+                                  if (value == null || value.isEmpty || value.length < 4) {
+                                    return 'Please enter a valid username (at least 4 characters)';
                                   }
                                   return null;
-                                }),
+                                },
+                                onSaved: (value) {
+                                  _enteredUsername = value!;
+                                },
+                              ),
                             TextFormField(
                               decoration: const InputDecoration(labelText: 'Password'),
                               obscureText: true,
