@@ -57,8 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       validator: (val) {
                         if (val!.isEmpty) {
                           return 'Please fill in this field!';
-                        } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
-                            .hasMatch(val)) {
+                        } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$').hasMatch(val)) {
                           return 'Please enter a valid email!';
                         }
                         return null;
@@ -76,8 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   validator: (val) {
                     if (val!.isEmpty) {
                       return 'Please fill in this field!';
-                    } else if (!RegExp(
-                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                    } else if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
                         .hasMatch(val)) {
                       return 'Please enter a valid password!';
                     }
@@ -105,28 +103,20 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: TextButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              context.read<SignInBloc>().add(SignInRequired(
-                                  emailController.text,
-                                  passwordController.text));
+                              context.read<SignInBloc>().add(SignInRequired(emailController.text, passwordController.text));
                             }
                           },
                           style: TextButton.styleFrom(
                               elevation: 3.0,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
                               foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(60))),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60))),
                           child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 5),
+                            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
                             child: Text(
                               'Sign In',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                           )),
                     )
