@@ -1,4 +1,4 @@
-import '../entities/user_entity.dart';
+import '../entities/entities.dart';
 
 class MyUser {
   String userId;
@@ -31,11 +31,10 @@ class MyUser {
 
   static MyUser fromEntity(MyUserEntity entity) {
     return MyUser(
-      userId: entity.userId,
-      email: entity.email,
-      name: entity.name,
-      hasActiveCart: entity.hasActiveCart,
-    );
+        userId: entity.userId,
+        email: entity.email,
+        name: entity.name,
+        hasActiveCart: entity.hasActiveCart);
   }
 
   @override
