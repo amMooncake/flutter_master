@@ -15,8 +15,9 @@ class MyAppView extends StatelessWidget {
         title: 'Pizza Delivery',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            colorScheme: ColorScheme.light(
-                surface: Colors.grey.shade200, onSurface: Colors.black, primary: Colors.blue, onPrimary: Colors.white)),
+          colorScheme: ColorScheme.light(
+              surface: Colors.grey.shade200, onSurface: Colors.black, primary: Colors.blue, onPrimary: Colors.white),
+        ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: ((context, state) {
             if (state.status == AuthenticationStatus.authenticated) {

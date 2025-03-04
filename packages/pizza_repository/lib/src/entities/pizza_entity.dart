@@ -1,22 +1,22 @@
-import 'macros_entity.dart';
+import 'entities.dart';
 import '../models/models.dart';
 
 class PizzaEntity {
   String pizzaId;
   String picture;
   bool isVeg;
-  int spiceLevel;
+  int spicy;
   String name;
   String description;
-  int price;
-  int discount;
+  double price;
+  double discount;
   Macros macros;
 
   PizzaEntity({
     required this.pizzaId,
     required this.picture,
     required this.isVeg,
-    required this.spiceLevel,
+    required this.spicy,
     required this.name,
     required this.description,
     required this.price,
@@ -29,7 +29,7 @@ class PizzaEntity {
       'pizzaId': pizzaId,
       'picture': picture,
       'isVeg': isVeg,
-      'spicy': spiceLevel,
+      'spicy': spicy,
       'name': name,
       'description': description,
       'price': price,
@@ -43,7 +43,7 @@ class PizzaEntity {
       pizzaId: doc['pizzaId'],
       picture: doc['picture'],
       isVeg: doc['isVeg'],
-      spiceLevel: doc['spiceLevel'],
+      spicy: doc['spicy'],
       name: doc['name'],
       description: doc['description'],
       price: doc['price'],
