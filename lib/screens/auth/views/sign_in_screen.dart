@@ -25,7 +25,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return BlocListener<SignInBloc, SignInState>(
       listener: (context, state) {
-        if (state is SignInProcess) {
+        if (state is SignInSuccess) {
           setState(() {
             signInRequired = false;
           });

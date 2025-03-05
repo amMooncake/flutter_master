@@ -1,9 +1,11 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:pizza_app/components/macro.dart';
+import 'package:pizza_repository/pizza_repository.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key});
+  final Pizza pizza;
+  const DetailsScreen({required this.pizza, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,39 +18,34 @@ class DetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width - 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(color: Colors.grey, offset: Offset(3, 3), blurRadius: 5),
-                ],
-                image: const DecorationImage(
-                  image: AssetImage('assets/1.png'),
+              child: Hero(
+                tag: pizza.pizzaId,
+                child: Material(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  child: Image(image: NetworkImage(pizza.picture)),
                 ),
               ),
             ),
             const SizedBox(height: 30),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(color: Colors.grey, offset: Offset(3, 3), blurRadius: 5),
-                ],
-              ),
+            Material(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              elevation: 3,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        const Expanded(
+                        Expanded(
                           flex: 2,
                           child: Text(
-                            "Truffle Temption Extravaganza",
+                            pizza.name,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -62,15 +59,15 @@ class DetailsScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "\$12.00",
+                                  "\$${pizza.discount}.00",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
-                                const Text(
-                                  "\$16.00",
+                                Text(
+                                  "\$${pizza.price}.00",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -87,15 +84,15 @@ class DetailsScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    const Row(
+                    Row(
                       children: [
-                        MyMacroWidget(title: "Calories", value: 267, myIcon: FontAwesomeIcons.fire),
+                        MyMacroWidget(title: "Calories", value: pizza.macros.calories, myIcon: FontAwesomeIcons.fire),
                         SizedBox(width: 10),
-                        MyMacroWidget(title: "Protain", value: 36, myIcon: FontAwesomeIcons.dumbbell),
+                        MyMacroWidget(title: "Protain", value: pizza.macros.proteins, myIcon: FontAwesomeIcons.dumbbell),
                         SizedBox(width: 10),
-                        MyMacroWidget(title: "Fat", value: 21, myIcon: FontAwesomeIcons.oilWell),
+                        MyMacroWidget(title: "Fat", value: pizza.macros.fat, myIcon: FontAwesomeIcons.oilWell),
                         SizedBox(width: 10),
-                        MyMacroWidget(title: "Carbs", value: 38, myIcon: FontAwesomeIcons.breadSlice),
+                        MyMacroWidget(title: "Carbs", value: pizza.macros.carbs, myIcon: FontAwesomeIcons.breadSlice),
                       ],
                     ),
                     const SizedBox(height: 20),

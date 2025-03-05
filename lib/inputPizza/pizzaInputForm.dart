@@ -63,13 +63,9 @@ class _PizzaInputFormScreenState extends State<PizzaInputFormScreen> {
       );
 
       if (await pizzaCollectionRepository.CreatePizza(newPizza)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Pizza saved successfully!')),
-        );
+        print("ok");
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to save pizza!')),
-        );
+        print("nie ok");
       }
     }
   }
