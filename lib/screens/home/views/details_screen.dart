@@ -128,9 +128,16 @@ class DetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
+              ),
+            ),
+            Text(
+              pizza.description,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
               ),
             ),
           ],

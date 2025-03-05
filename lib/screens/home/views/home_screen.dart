@@ -67,6 +67,7 @@ class HomeScreen extends StatelessWidget {
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Hero(
                               tag: state.pizzas[i].pizzaId,
@@ -124,10 +125,10 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Text(
                               state.pizzas[i].name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -135,12 +136,17 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Text(
-                              state.pizzas[i].description,
-                              style: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w300,
+                            child: SizedBox(
+                              child: Text(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                state.pizzas[i].description,
+                                // "lol",
+                                style: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ),
                           ),
@@ -189,6 +195,7 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 12),
                         ],
                       ),
                     ),

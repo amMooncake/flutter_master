@@ -293,6 +293,32 @@ class _PizzaInputFormScreenState extends State<PizzaInputFormScreen> {
                         child: const Text('Save Pizza', style: TextStyle(fontSize: 18)),
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: TextButton(
+                        style: TextButton.styleFrom(backgroundColor: Colors.red),
+                        onPressed: () {
+                          // Clear all text controllers
+                          // Instead of clear(), set text directly
+                          _nameController.text = '';
+                          _picturePathController.text = '';
+                          _descriptionController.text = '';
+                          _priceController.text = '';
+                          _discountController.text = '';
+                          _spicyController.text = '';
+                          _caloriesController.text = '';
+                          _carbsController.text = '';
+                          _fatController.text = '';
+                          _proteinsController.text = '';
+                          setState(() {
+                            _isVegetarian = false;
+                          });
+                        },
+                        child: const Text('clear Inputs', style: TextStyle(fontSize: 18)),
+                      ),
+                    ),
                   ],
                 ),
               ),
